@@ -1,0 +1,92 @@
+
+/* 공동사용 아이콘/버튼/글자색*/
+.ico_arr_b{
+    width: 9.5px;
+    height: 19px;
+}
+.ico_check_blue{
+    width: 27px;
+    height: 27px;
+    background:url(../image/ico/check_blue_on.svg) no-repeat;
+}
+
+
+// 공동 메뉴 링크
+.menu_link{
+    border-top: 5px solid #eef2f4;
+    .link_unit{
+        border-bottom: 0 none;
+    }
+}
+
+// 공동 체크박스 (메뉴)
+.cont_tmp{
+    padding: 20px 20px 21px 20px;
+    border-top: 5px solid #eef2f4;
+    .inp_opt{
+        position: absolute;
+        opacity: 0;
+        left: -9999px;
+    }
+    .lab_tmp{
+        .ico_check{
+            margin: -3px 6px 0 0;
+            vertical-align: middle;
+        }
+    }
+}
+
+/* 공동스타일 HEADER */
+.head_beat{
+    .btn_close{
+        position: absolute;
+        display: inline-block;
+        top: 0;
+        right: 0;
+        padding: 24px 20px;
+    }
+}
+.head_type_close{
+    .sub_title{
+        &.sub_page{
+            margin-left:0;
+        }
+    }
+}
+
+
+/***********************/
+/*     메 뉴 SUBPAGE    */
+/* 메뉴 SUB 공동스타일 */
+/***********************/
+.btn_basic{
+    .cor_navy{
+        background-color: #23275f;
+    }
+    .cor_blue{
+        background-color: #67abdd;
+    }
+}
+
+// 공동 LAYOUT
+.box_default{
+    .tit_info{
+        display: block;
+        line-height: 14px;
+        font-weight: 500;
+        margin-bottom: 2px;
+    }
+    .date_result{
+        display: block;
+        margin-top: 6px;
+        color: #7b8285;
+    }
+}
+.space_ground{
+    text-align: center;
+    .txt_cmmt{
+        line-height: 12px;
+        font-size: 11px;
+        color: #7b8285;
+    }
+}
