@@ -83,4 +83,13 @@ th,td {font-weight:400;text-align:left;padding:0;margin:0;}
 .show{display: block !important}
 
 
+table {
+	width: 100%;
+	border: 1px solid #444444;
+	border-collapse: collapse;
+}
+th, td {
+	border: 1px solid #444444;
+}
+
 
