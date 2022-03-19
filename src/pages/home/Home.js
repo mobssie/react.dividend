@@ -22,20 +22,39 @@ const Home = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [ID, setID] = useState(0);
   const [data, setData] = useState([])
+  const [incomeDate, setIncomeDate] = useState('')
+  const [price, setPrice] = useState(0)
+  const [stocks, setStock] = useState('')
+  const [inputs, setInputs] = useState({
+    stocks: '',
+    price: ''
+  })
+  
+
   
   const [params, setParams] = useState({
-    username: '',
-    email: '',
-    password: '',
-    password2: '',
+    rowId: '',
+    currency: 'USD',
+    exchangeRate: 0,
+    incomeDate: '',
+    price: 0,
+    standardPrice: 'KRW',
+    stocks: ''
   });
 
 
-  const handleClick = () => {
-    devidend.add({ ...params, text: "꿀잠 자기", completed: true}).then((docRef)=>{
+  const handleClick = (e) => {
+    devidend.add({ ...params, ...inputs}).then((docRef)=>{
       // 새로운 document의 id
        console.log(docRef.id);
      })
+  }
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setInputs({
+      ...inputs, 
+      [name]: value
+    })
   }
   useEffect(() => {
     devidend.doc("devidendData").get().then((doc) => {
@@ -51,6 +70,7 @@ const Home = () => {
         <div className="unit_data">
           <span className="tit_basic info_date">날짜{data.incomeDate}</span>
           <DatePicker
+            name="incomeDate"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             dateFormatCalendar={"MMM yyyy"}
@@ -61,11 +81,17 @@ const Home = () => {
         </div>
         <div className="unit_data">
           <span className="tit_basic info_date">종목명</span>
-          <input type="text" className="inp_basic inp_date"/>
+          <input type="text" name="stocks" 
+            className="inp_basic inp_date"
+            onChange={handleOnChange}
+            />
         </div>
         <div className="unit_data">
           <span className="tit_basic info_date">배당금</span>
-          <input type="text" className="inp_basic inp_date"/>
+          <input type="text" name="price" 
+          className="inp_basic inp_date"
+          onChange={handleOnChange}
+          />
         </div>
         <Button primary onClick={handleClick}>추가</Button>
       </div>
