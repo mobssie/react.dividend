@@ -8,7 +8,8 @@ import { useEffect } from 'react';
 
 const App = () => {
   useEffect(() => {
-    console.log('@$@$@$@@$')
+    console.log('@$@$@$@@$1')
+    console.log('@$@$@$@@$2')
     console.log(firestore);
   });
   return (
