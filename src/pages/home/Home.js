@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker";
 import { subMonths, addMonths } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 import { firestore } from "../../firebase";
+import useForm from "../../hooks/useForm";
+
 const devidend = firestore.collection('devidend');
 
 const Button = styled.button`
@@ -19,6 +21,7 @@ const Button = styled.button`
 `;
 
 const Home = () => {
+  const {values, handleChange, handleSubmit} = useForm();
   const [startDate, setStartDate] = useState(new Date());
   const [ID, setID] = useState(0);
   const [data, setData] = useState([])
@@ -68,7 +71,18 @@ const Home = () => {
       <h2>배당금 기록</h2>
       <div className="warp_top">
         <div className="unit_data">
-          <span className="tit_basic info_date">날짜{data.incomeDate}</span>
+          <label htmlFor="username" className="formLabel">
+            Username
+          </label>
+          <input
+            type="text"
+            name="username"
+            className="Inputs"
+            onChange={handleChange}
+            value={values.username}
+            placeholder="Enter your username"
+          />
+          <span className="tit_basic info_date">날짜</span>
           <DatePicker
             name="incomeDate"
             selected={startDate}
