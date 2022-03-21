@@ -6,6 +6,7 @@ import { subMonths, addMonths } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 import { firestore } from "../../firebase";
 import useForm from "../../hooks/useForm";
+import Header from '../../components/layout/header'
 
 const devidend = firestore.collection('devidend');
 
@@ -68,6 +69,7 @@ const Home = () => {
   },[])
   return (
     <div>
+      <Header/>
       <h2>배당금 기록</h2>
       <div className="warp_top">
         <div className="unit_data">
