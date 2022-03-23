@@ -1,22 +1,30 @@
 // GoogleButton.js
 
-import React from 'react';
+import React, {useState} from 'react';
 import GoogleLogin from 'react-google-login';
 
 const clientId = process.env.REACT_APP_FIREBASE_AUTH_CLIENT_ID;
 
-export default function LoginGoogleBtn({ onSocial }){
+export default function LoginGoogleBtn(){
+  const [params, setParmas] = useState({
+    socialId : '',
+    socialType : '',
+    email: '',
+    nickname : '',
+    accessToken: '',
+  });
   const onSuccess = async(response) => {
-  
-      const { googleId, profileObj : { email, name } } = response;
-      console.log('response', response);
-      console.log(response);
-      // await onSocial({
-      //     socialId : googleId,
-      //     socialType : 'google',
-      //     email,
-      //     nickname : name
-      // });
+    const { googleId, profileObj : { email, name }, accessToken } = response;
+    console.log('accessToken ??', accessToken)
+    console.log('email ??', email, 'name', name)
+    await setParmas({
+        socialId : googleId,
+        socialType : 'google',
+        email,
+        nickname : name,
+        accessToken,
+    });
+    localStorage.setItem("accessToken", params);
   }
 
   const onFailure = (error) => {
