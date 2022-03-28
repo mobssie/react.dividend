@@ -2,6 +2,7 @@
 
 import React, {useState} from 'react';
 import GoogleLogin from 'react-google-login';
+import Button from '@mui/material/Button';
 
 const clientId = process.env.REACT_APP_FIREBASE_AUTH_CLIENT_ID;
 
