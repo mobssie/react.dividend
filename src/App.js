@@ -3,7 +3,8 @@ import About from './pages/about/About';
 import Home from './pages/home/Home';
 import { firestore } from "./firebase";
 import { useEffect } from 'react';
-
+import HeaderLayout from '../src/components/layout/HeaderLayout'
+const isLogin = false;
 
 
 const App = () => {
@@ -11,10 +12,13 @@ const App = () => {
     console.log(firestore);
   });
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-    </Routes>
+    <div>
+      <HeaderLayout />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </div>
   );
 };
 
