@@ -14,17 +14,13 @@ export default function LoginGoogleBtn(){
     accessToken: '',
   });
   const onSuccess = async(response) => {
-    const { googleId, profileObj : { email, name }, accessToken } = response;
-    console.log('accessToken ??', accessToken)
-    console.log('email ??', email, 'name', name)
-    await setParmas({
-        socialId : googleId,
-        socialType : 'google',
-        email,
-        nickname : name,
-        accessToken,
-    });
-    localStorage.setItem("accessToken", params);
+    const { googleId, profileObj : { email, name }, accessToken } = await response;
+    localStorage.setItem("accessToken", JSON.stringify(accessToken));
+    localStorage.setItem("user", JSON.stringify({
+      googleId,
+      name,
+      email,
+    }));
   }
 
   const onFailure = (error) => {
