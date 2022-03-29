@@ -2,10 +2,14 @@ import { useState } from 'react';
 
 const useForm = () => {
   const [values, setValues] = useState({
-    username: '',
-    email: '',
-    password: '',
-    password2: '',
+    rowId: '',
+    date: '',
+    stocksNm: '', // 종목명
+    currency: 'USD', // 통화
+    exchangeRate: 0, // 환률
+    incomeDate: '', // 입금일
+    dividendPrice: 0, // 배당금
+    standardPrice: 'KRW', // 원화환산
   });
 
   const handleChange = (e) => {

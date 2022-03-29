@@ -22,7 +22,7 @@ const HeaderLayout = () => {
   const classes = useStyles();
 
   return(
-    <StyledDiv>=
+    <StyledDiv>
       <button className={classes.root}>
         <Link to="/login">로그인</Link>
       </button>
