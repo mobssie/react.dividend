@@ -5,8 +5,6 @@ import Login from './pages/login/Login';
 import { firestore } from "./firebase";
 import { useEffect } from 'react';
 import HeaderLayout from '../src/components/layout/HeaderLayout'
-const isLogin = false;
-
 
 const App = () => {
   useEffect(() => {

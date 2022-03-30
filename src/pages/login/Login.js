@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
@@ -61,54 +61,45 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
-  const [accessToken, setAccessToken] = useState('')
+  const [accessTokenData, setAccessTokenData] = useState('')
   const [showLoginButton, setLoginButton] = useState(true);
   const [showLogoutButton, setLogoutButton] = useState(false);
   const classes = useStyles();
-  const loginHandler = (res) => {
-    console.log("res", res.profileObj);
-    console.log("this is my")
+  const loginHandler = async(response) => {
+    const { googleId, profileObj : { email, name }, accessToken } = await response;
+    localStorage.setItem('accessToken', JSON.stringify(accessToken));
+    localStorage.setItem('user', JSON.stringify({
+      googleId,
+      name,
+      email,
+    }));
     setLoginButton(false);
     setLogoutButton(true);
   };
-  const failureHandler = (res) => {
-    console.log("login failed", res);
+  const failureHandler = (response) => {
+    console.log("login failed", response);
   };
-  const logoutHandler = (res) => {
+  const logoutHandler = (response) => {
     alert("logout sucessfully");
+    localStorage.setItem('accessToken', '');
     setLoginButton(true);
     setLogoutButton(false);
   };
-  // const auth = firebase.auth();
-  // const responseFacebook = (response) => {
-  //   console.log(response);
-  //   history.push("/");
-  // };
-
-  // const providerGoogle = new firebase.auth.GoogleAuthProvider();
-  // const [params, setParmas] = useState({
-  //   socialId : '',
-  //   socialType : '',
-  //   email: '',
-  //   nickname : '',
-  //   accessToken: '',
-  // });
-  // const onSuccess = async(response) => {
-  //   const { googleId, profileObj : { email, name }, accessToken } = await response;
-  //   localStorage.setItem('accessToken', JSON.stringify(accessToken));
-  //   localStorage.setItem('user', JSON.stringify({
-  //     googleId,
-  //     name,
-  //     email,
-  //   }));
-  // }
 
   const onFailure = (error) => {
     console.log(error);
   }
   useEffect(() => {
-
-  }, [accessToken])
+    setAccessTokenData(localStorage.getItem('accessToken'))
+    if(accessTokenData){
+      console.log('있다')
+      setLoginButton(false);
+      setLogoutButton(true);
+    }else {
+      setLoginButton(true);
+      setLogoutButton(false);
+    }
+  }, [accessTokenData])
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
