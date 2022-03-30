@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import { firestore } from "../../firebase";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
+const clientId = process.env.REACT_APP_FIREBASE_AUTH_CLIENT_ID;
 
 function Copyright() {
   return (
@@ -59,7 +61,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
+  const [accessToken, setAccessToken] = useState('')
+  const [showLoginButton, setLoginButton] = useState(true);
+  const [showLogoutButton, setLogoutButton] = useState(false);
   const classes = useStyles();
+  const loginHandler = (res) => {
+    console.log("res", res.profileObj);
+    console.log("this is my")
+    setLoginButton(false);
+    setLogoutButton(true);
+  };
+  const failureHandler = (res) => {
+    console.log("login failed", res);
+  };
+  const logoutHandler = (res) => {
+    alert("logout sucessfully");
+    setLoginButton(true);
+    setLogoutButton(false);
+  };
   // const auth = firebase.auth();
   // const responseFacebook = (response) => {
   //   console.log(response);
@@ -67,33 +86,69 @@ const Login = () => {
   // };
 
   // const providerGoogle = new firebase.auth.GoogleAuthProvider();
+  // const [params, setParmas] = useState({
+  //   socialId : '',
+  //   socialType : '',
+  //   email: '',
+  //   nickname : '',
+  //   accessToken: '',
+  // });
+  // const onSuccess = async(response) => {
+  //   const { googleId, profileObj : { email, name }, accessToken } = await response;
+  //   localStorage.setItem('accessToken', JSON.stringify(accessToken));
+  //   localStorage.setItem('user', JSON.stringify({
+  //     googleId,
+  //     name,
+  //     email,
+  //   }));
+  // }
+
+  const onFailure = (error) => {
+    console.log(error);
+  }
+  useEffect(() => {
+
+  }, [accessToken])
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
         <Typography variant="h6" component="h4">
           Sign In
         </Typography>
-        <Button
-          // onClick={singInWithGoogle}
-          variant="outlined"
-          style={{
-            textTransform: "none",
-            paddingRight: "60px",
-            marginTop: "50px",
-            background: "white"
-          }}
-        >
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBRF__vDRer9N3lzmW-FJTnaiCi1Vd7TvcHrdcjzU28RHD2kcpRVdZIQhLvZaksbBPpak&usqp=CAU"
+        <Box mt={8}>
+        {showLoginButton && (
+          <GoogleLogin
+            buttonText="Log in with Google"
+            clientId={clientId}
+            variant="outlined"
             style={{
-              width: "20px",
-              height: "20px",
-              marginRight: "60px"
+              color: "red",
+              textTransform: "none",
+              paddingRight: "60px",
+              marginTop: "50px",
+              background: "red",
             }}
-            alt="google"
+            responseType={"id_token"}
+            onSuccess={loginHandler}
+            onFailure={failureHandler}
+            cookiePolicy={'single_host_origin'}
           />
-          Log in with Google
-        </Button>
+        )}
+        {showLogoutButton && (
+        <GoogleLogout
+          clientId={clientId}
+          render={(renderProps) => (
+            <button
+              className="btn button btn-outline"
+              onClick={renderProps.onClick}
+              // disabled={renderProps.disabled}
+            >logout 
+            </button>
+          )}
+          onLogoutSuccess={logoutHandler}
+        ></GoogleLogout>
+      )}
+          </Box>
       </div>
       <Box mt={8}>
         <Copyright />
