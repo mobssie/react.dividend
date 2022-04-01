@@ -1,17 +1,18 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Redirect } from 'react-router-dom';
 import About from './pages/about/About';
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
-import { firestore } from "./firebase";
+//import { firestore } from "./firebase";
 import { useEffect } from 'react';
 import HeaderLayout from '../src/components/layout/HeaderLayout'
-import { useSelector } from 'react-redux'
+import { isLoaded, isEmpty } from "react-redux-firebase";
+import { useSelector } from "react-redux";
 
 const App = () => {
   const 데이터 = useSelector((state)=>state)
-  useEffect(() => {
-    console.log(firestore);
-  });
+  // useEffect(() => {
+  //   console.log(firestore);
+  // });
   return (
     <div>
       <HeaderLayout />

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import DatePicker from "react-datepicker";
 import { subMonths, addMonths } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
-import { firestore } from "../../firebase";
+// import { firestore } from "../../firebase";
 import useForm from "../../hooks/useForm";
 import InpAdd from '../../components/form/InpAdd';
 import MaterialTable from "material-table";
@@ -12,7 +12,14 @@ import { tableColumns } from "../../columns/tableColumns"
 import { forwardRef } from 'react';
 
 import { isLogin, isLoginOut } from '../../modules/login';
+import { useFirestore } from "react-redux-firebase";
 import { useDispatch, useSelector } from 'react-redux';
+
+
+
+
+
+
 
 
 import AddBox from '@material-ui/icons/AddBox';
@@ -32,7 +39,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
 
-const devidend = firestore.collection('devidend');
+// const devidend = firestore.collection('devidend');
 
 
 
@@ -89,7 +96,33 @@ const Home = (props) => {
     stocksNm: '',
     dividendPrice: ''
   })
-
+  const [presentToDo, setPresentToDo] = useState('');
+  const firestore = useFirestore();
+  const { uid } = useSelector((state) => state.firebase.auth);
+  const onHandleChange = ({ currentTarget: { name, value } }) => {
+    console.log('value', value)
+    if (name === 'addTodo') {
+      setPresentToDo(value);
+    }
+  };
+  const addNewTodo = (todo) => {
+    firestore
+      .collection('users')
+      .doc(uid)
+      .collection('todos')
+      .add({
+        title: todo,
+        isDone: false,
+      })
+      .then((docRef) => {
+        docRef.update({
+          todoID: docRef.id,
+        });
+      });
+    setPresentToDo('');
+  };
+  console.log('firestore //', firestore)
+  console.log('uid //', uid)
   
 
 
@@ -107,21 +140,21 @@ const Home = (props) => {
 
 
   const handleClick = (e) => {
-    devidend.add({ ...params, ...inputs}).then((docRef)=>{
-      // 새로운 document의 id
-       console.log(docRef.id);
-     })
+    // devidend.add({ ...params, ...inputs}).then((docRef)=>{
+    //   // 새로운 document의 id
+    //    console.log(docRef.id);
+    //  })
   }
 
   
 
 
   useEffect(() => {
-    devidend.doc("devidendData").get().then((doc) => {
-      if (doc.exists) {
-        setData(doc.data())
-      }
-    });
+    // devidend.doc("devidendData").get().then((doc) => {
+    //   if (doc.exists) {
+    //     setData(doc.data())
+    //   }
+    // });
   },[])
 
   const { login, email } = useSelector(state => ({
@@ -134,12 +167,24 @@ const Home = (props) => {
   const onIsLogout = () => dispatch(isLoginOut());
   return (
     <div>
-      <button type="button" onClick={onIsLogin}>
-        더하기
-      </button>
-      <button type="button" onClick={onIsLogout}>
-        더하기
-      </button>
+      <div>
+      <form action="">
+        <input
+          type="text"
+          name="addTodo"
+          value={presentToDo}
+          onChange={onHandleChange}
+        />
+        <button
+          onClick={(event) => {
+            event.preventDefault();
+            addNewTodo(presentToDo);
+          }}
+        >
+          Add Todo
+        </button>
+      </form>
+    </div>
       <MaterialTable
         columns={tableColumns(props)}
         data={data}
@@ -151,7 +196,8 @@ const Home = (props) => {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 setData([...data, newData]);
-                
+                console.log("new: :::", newData);
+                addNewTodo(newData);
                 resolve();
               }, 1000);
             }),
