@@ -11,6 +11,9 @@ import MaterialTable from "material-table";
 import { tableColumns } from "../../columns/tableColumns"
 import { forwardRef } from 'react';
 
+import { isLogin, isLoginOut } from '../../modules/login';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -54,17 +57,6 @@ const tableIcons = {
 };
 
 
-const Button = styled.button`
-  background: ${props => props.primary ? '#db7093' : '#fff'};
-  color: ${props => props.primary ? '#fff' : '#db7093'};
-
-  font-size: 1em;
-  padding: 4px 6px;
-  border: 2px solid #db7093;
-  border-radius: 3px;
-  line-height: 1;
-`;
-
 const originalData = [
   {
     id: "client 1",
@@ -84,6 +76,11 @@ const originalData = [
 ];
 
 const Home = (props) => {
+
+  console.log('props ?? :', props.name);
+
+  const dispatch = useDispatch()
+  const accessToken = window.localStorage.getItem('accessToken')
   const {values, handleChange, handleSubmit} = useForm();
   const [ID, setID] = useState(0);
   //const [data, setData] = useState([])
@@ -95,7 +92,8 @@ const Home = (props) => {
 
   
 
-  
+
+
   const [params, setParams] = useState({
     date: '',
     rowId: '',
@@ -114,13 +112,10 @@ const Home = (props) => {
        console.log(docRef.id);
      })
   }
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs, 
-      [name]: value
-    })
-  }
+
+  
+
+
   useEffect(() => {
     devidend.doc("devidendData").get().then((doc) => {
       if (doc.exists) {
@@ -128,8 +123,23 @@ const Home = (props) => {
       }
     });
   },[])
+
+  const { login, email } = useSelector(state => ({
+    login: state.login.login,
+    email: state.login.email
+  }));
+
+
+  const onIsLogin = () => dispatch(isLogin());
+  const onIsLogout = () => dispatch(isLoginOut());
   return (
     <div>
+      <button type="button" onClick={onIsLogin}>
+        더하기
+      </button>
+      <button type="button" onClick={onIsLogout}>
+        더하기
+      </button>
       <MaterialTable
         columns={tableColumns(props)}
         data={data}
@@ -171,8 +181,6 @@ const Home = (props) => {
             })
         }}
       />
-      <InpAdd></InpAdd>
-      <DataTable/>
     </div>
   );
 };
