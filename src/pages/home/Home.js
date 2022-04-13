@@ -88,6 +88,7 @@ const Home = (props) => {
 
   const dispatch = useDispatch()
   const accessToken = window.localStorage.getItem('accessToken')
+  const userToken = window.localStorage.getItem('user')
   const {values, handleChange, handleSubmit} = useForm();
   const [ID, setID] = useState(0);
   //const [data, setData] = useState([])
@@ -99,6 +100,10 @@ const Home = (props) => {
   const [presentToDo, setPresentToDo] = useState('');
   const firestore = useFirestore();
   const { uid } = useSelector((state) => state.firebase.auth);
+  // console.log('userToken', JSON.parse(userToken.email))
+
+
+
   const onHandleChange = ({ currentTarget: { name, value } }) => {
     console.log('value', value)
     if (name === 'addTodo') {
@@ -106,6 +111,7 @@ const Home = (props) => {
     }
   };
   const addNewTodo = (todo) => {
+    console.log('todo', todo)
     firestore
       .collection('users')
       .doc(uid)
