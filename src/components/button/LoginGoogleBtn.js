@@ -16,8 +16,8 @@ export default function LoginGoogleBtn(){
   });
   const onSuccess = async(response) => {
     const { googleId, profileObj : { email, name }, accessToken } = await response;
-    localStorage.setItem("accessToken", JSON.stringify(accessToken));
-    localStorage.setItem("user", JSON.stringify({
+    window.localStorage.setItem("accessToken", JSON.stringify(accessToken));
+    window.localStorage.setItem("user", JSON.stringify({
       googleId,
       name,
       email,

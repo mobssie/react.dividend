@@ -68,6 +68,7 @@ const Login = () => {
   const loginHandler = async(response) => {
     const { googleId, profileObj : { email, name }, accessToken } = await response;
     localStorage.setItem('accessToken', JSON.stringify(accessToken));
+    localStorage.setItem('emailInfo', JSON.stringify(email));
     localStorage.setItem('user', JSON.stringify({
       googleId,
       name,
